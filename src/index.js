@@ -1,5 +1,13 @@
-function changeCurrentTime() {
-  let now = new Date();
+function changeCurrentTime(timestamp) {
+  let date = new Date(timestamp);
+  let hours = date.getHours();
+  if (hours < 10) {
+    hours = `0${hours}`;
+  }
+  let minutes = date.getMinutes();
+  if (minutes < 10) {
+    minutes = `0${minutes}`;
+  }
 
   let days = [
     "Sunday",
@@ -10,20 +18,18 @@ function changeCurrentTime() {
     "Friday",
     "Saturday",
   ];
-
-  let currentDay = days[now.getDay()];
-  let currentHour = now.getHours();
-  if (currentHour < 10) {
-    currentHour = `0${currentHour}`;
-  }
-  let currentMinutes = now.getMinutes();
-  if (currentMinutes < 10) {
-    currentMinutes = `0${currentMinutes}`;
-  }
-  let time = document.querySelector(".date");
-  return (time.innerHTML = `${currentDay} ${currentHour}:${currentMinutes}`);
+  let day = days[date.getDay()];
+  return `${day} ${hours}:${minutes}`;
 }
-changeCurrentTime();
+
+function formatDay(timestamp) {
+  let date = new Date(timestamp * 1000);
+  let day = date.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  return days[day];
+}
+
 
 function showCity(event) {
   event.preventDefault();
@@ -45,11 +51,13 @@ function displayWeatherCondition(response) {
   let windSpeed = document.querySelector(".wind-speed");
   let pressure = document.querySelector(".pressure");
   let iconElement = document.querySelector("#icon");
-  
+   let dateElement = document.querySelector("#date");
+
   pressure.innerHTML = Math.round(response.data.main.pressure);
   newCity.innerHTML = response.data.name;
   temperature.innerHTML = Math.round(response.data.main.temp);
   feelTemperature.innerHTML = Math.round(response.data.main.feels_like);
+  dateElement.innerHTML = changeCurrentTime(response.data.dt * 1000);
   iconElement.setAttribute(
     "src",
     `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
