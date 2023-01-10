@@ -40,16 +40,21 @@ searchButton.addEventListener("click", showCity);
 
 function displayWeatherCondition(response) {
   let newCity = document.querySelector(".own-City");
-  newCity.innerHTML = response.data.name;
   let temperature = document.querySelector("#temperature");
-  temperature.innerHTML = Math.round(response.data.main.temp);
   let feelTemperature = document.querySelector(".feels-like");
-  feelTemperature.innerHTML = Math.round(response.data.main.feels_like);
   let windSpeed = document.querySelector(".wind-speed");
-  windSpeed.innerHTML = Math.round(response.data.wind.speed);
   let pressure = document.querySelector(".pressure");
+  let iconElement = document.querySelector("#icon");
+  
   pressure.innerHTML = Math.round(response.data.main.pressure);
-  console.log(response.data);
+  newCity.innerHTML = response.data.name;
+  temperature.innerHTML = Math.round(response.data.main.temp);
+  feelTemperature.innerHTML = Math.round(response.data.main.feels_like);
+  iconElement.setAttribute(
+    "src",
+    `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+  );
+  iconElement.setAttribute("alt", response.data.weather[0].description);
 }
 function searchLocation(position) {
   let lat = position.coords.latitude;
