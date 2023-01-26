@@ -97,15 +97,16 @@ function displayWeatherCondition(response) {
   getForecast(response.data.coord);
 }
 
+function searchCity(city) {
+  let apiKey = "a33b693cfbefd271b0ed075f9a8f65f0";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(displayWeatherCondition);
+}
+
 function showCity(event) {
   event.preventDefault();
   let inputCity = document.querySelector("#city-name");
-  let newCity = document.querySelector(".own-City");
-  newCity.innerHTML = `${inputCity.value}`;
-  let apiKey = "a33b693cfbefd271b0ed075f9a8f65f0";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${inputCity.value}&appid=${apiKey}&units=metric`;
-
-  axios.get(apiUrl).then(displayWeatherCondition);
+  searchCity(inputCity.value);
 }
 let searchButton = document.querySelector(".btn-primary");
 searchButton.addEventListener("click", showCity);
@@ -152,3 +153,5 @@ fahrenheitLink.addEventListener("click", displayFahrenheitTemperature);
 
 let celsiusLink = document.querySelector("#celsius-link");
 celsiusLink.addEventListener("click", displayCelsiusTemperature);
+
+searchCity("Kyiv");
